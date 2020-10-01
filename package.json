@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "eventjuicer-site-components": "^2.3.7",
     "next": "9.5.3",
     "react": "16.13.1",
