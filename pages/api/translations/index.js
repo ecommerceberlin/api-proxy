@@ -1,6 +1,6 @@
 
 import Cors from 'cors'
-import {runMiddleware} from '../../components'
+import {runMiddleware} from '../../../components'
 
 // Initializing the cors middleware
 const cors = Cors({
