@@ -1,4 +1,5 @@
 import Cors from 'cors'
+import moment from 'moment-timezone'
 
 // Initializing the cors middleware
 const cors = Cors({
@@ -23,4 +24,9 @@ export function runMiddleware(req, res, fn) {
 
 export async function addCors(req, res){
   return await runMiddleware(req, res, cors)
+}
+
+
+export function time(tz = "Europe/Warsaw"){
+  return moment().tz(tz).format("HH:mm");
 }
