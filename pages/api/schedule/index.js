@@ -15,6 +15,8 @@ async function handler(req, res) {
 
     //get current time!
 
+    res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate")
+
     res.json( filtered )
 }
 
