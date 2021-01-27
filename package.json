@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "eventjuicer-site-components": "^2.3.7",
-    "next": "9.5.3",
+    "eventjuicer-site-components": "3.0.8",
+    "moment-timezone": "^0.5.32",
+    "next": "10.0.5",
+    "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   }

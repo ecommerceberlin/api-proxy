@@ -1,16 +1,9 @@
 
-import Cors from 'cors'
-import {runMiddleware} from '../../../components'
-
-// Initializing the cors middleware
-const cors = Cors({
-  methods: ['GET', 'HEAD'],
-})
-
+import {addCors} from '../../../components'
 
 async function handler(req, res) {
   // Run the middleware
-  await runMiddleware(req, res, cors)
+  await addCors(req, res)
 
   // Rest of the API logic
   res.json({ message: 'Hello Everyone!' })
@@ -18,13 +11,14 @@ async function handler(req, res) {
 
 export default handler
 
-/**
- * 
-
-res.status(code) - A function to set the status code. code must be a valid HTTP status code
-res.json(json) - Sends a JSON response. json must be a valid JSON object
-res.send(body) - Sends the HTTP response. body can be a string, an object or a Buffer
-res.redirect([status,] path) - Redirects to a specified path or URL. status must be a valid HTTP status code. If not specified, status defaults to "307" "Found".
 
 
- */
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '1mb',
+    },
+  },
+}
+
+
