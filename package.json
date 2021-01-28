@@ -1,5 +1,11 @@
 {
   "name": "api-proxy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecommerceberlin/api-proxy.git"
+  },
+  "author": "adam zygadlewicz <adam.zygadlewicz@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -12,5 +18,11 @@
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 10",
+    "not op_mini all"
+  ]
 }
