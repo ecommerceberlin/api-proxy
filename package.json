@@ -1,5 +1,6 @@
 {
   "name": "api-proxy",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ecommerceberlin/api-proxy.git"
@@ -18,11 +19,5 @@
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 10",
-    "not op_mini all"
-  ]
+  }
 }
