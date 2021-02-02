@@ -8,17 +8,24 @@ async function handler(req, res) {
 
   const {query: {url}} = req
 
+  const _url = decodeURIComponent(url);
+
   //we cache only known sources....
-  if(url.indexOf("https://api.eventjuicer.com/") === -1 && url.indexOf("https://localise.biz") === -1){
+  if(_url.indexOf("https://api.eventjuicer.com/") === -1 && _url.indexOf("https://localise.biz") === -1){
     res.status(500);
     res.end("Bad request")
     return
   }
 
-  const data = await fetch(url).then(res => res.json());
-
-  res.setHeader("cache-control", "s-maxage=10, stale-while-revalidate")
-  res.json(data)
+  try{  
+    const data = await fetch(_url).then(res => res.json());
+    res.setHeader("cache-control", "s-maxage=10, stale-while-revalidate")
+    res.json(data)
+  }catch{
+    res.status(500);
+    res.end("Bad request")
+  }
+  
 }
 
 export default handler
