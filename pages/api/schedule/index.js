@@ -8,8 +8,9 @@ async function handler(req, res) {
     await addCors(req, res)
     const json = await cache(req, res, url);
     const {data} = json;
-    
-    const filtered = data.filter(item => item.presentation_time)
+    const _time = time();
+
+    const filtered = data.filter(item => item.presentation_time <= _time )
 
     //get current time!
 
