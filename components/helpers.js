@@ -28,5 +28,5 @@ export async function addCors(req, res){
 
 
 export function time(tz = "Europe/Warsaw"){
-  return moment().tz(tz).format("HH:mm");
+  return moment().tz(tz).format("HH:mm:ss");
 }
