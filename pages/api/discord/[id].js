@@ -11,7 +11,6 @@ async function handler(req, res) {
 
     await addCors(req, res)
 
-    
     client.on('ready', async () => {
 
         console.log(`Logged in as ${client.user.tag}!`);
@@ -35,22 +34,11 @@ async function handler(req, res) {
 
         console.log(cleared)
 
-        //.then(channel => {
-
-        //     channel.messages.fetch({limit: 10}).then(async messages => {
-    
-        //         const notPinned = messages.array().filter(m => !m.pinned && !m.deleted)
-
-        //         console.log(notPinned)
-
-                
-        //     });
-
-        // })
-
-        res.json( cleared )
     
         client.destroy()
+
+        res.json( cleared )
+
 
     });
 
