@@ -55,7 +55,8 @@ async function handler(req, res) {
         const cleared = filtered.map(m => mapMessage(m))
     
         client.destroy()
-
+        redis.quit()
+        
         res.json( cleared )
 
     });
