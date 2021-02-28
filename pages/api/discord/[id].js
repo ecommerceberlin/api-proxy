@@ -11,10 +11,10 @@ const mapMessage = (m) => {
   const mentions = m.mentions.users.array().map(item => ({id: item.id, name: item.username}))
 
   //<@!803926999529160734>
-  const content = isString(m.content) ? m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
+  const content = m.content.replace(/<@!([0-9]+)>/g, (match, id) => {
     const lookup = mentions.find(mention => mention.id == id);
     return lookup ? `@${lookup.name}` : "";
-  }): m.content; 
+  }) 
 
   return ({
     id: m.id,
