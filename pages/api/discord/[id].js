@@ -5,6 +5,29 @@ const client = new Discord.Client();
 
 import {addCors, time} from '../../../components'
 
+
+const mapMessage = (m) => {
+
+  const mentions = m.mentions.users.array().map(item => ({id: item.id, name: item.username}))
+
+  //<@!803926999529160734>
+  const content = m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
+    const lookup = mentions.find(mention => mention.id == id);
+    return lookup ? `@${lookup.name}` : "";
+  }); 
+
+  return ({
+    id: m.id,
+    content: content, 
+    user: m.author.username, 
+    avatar: m.author.avatar,
+    ts: m.createdTimestamp,
+    localdate: new Date(m.createdTimestamp).toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' })
+  })
+
+}
+
+
 async function handler(req, res) {
 
     const {query: {id}} = req;
@@ -23,28 +46,16 @@ async function handler(req, res) {
         
         const messages = await channel.messages.fetch({limit: 10});
         const filtered = messages.array().filter(m => !m.pinned && !m.deleted && !m.system)
-        const cleared = filtered.map(m => ({
-            id: m.id,
-            content: m.content, 
-            user: m.author.username, 
-            avatar: m.author.avatar,
-            ts: m.createdTimestamp,
-            localdate: new Date(m.createdTimestamp).toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' })
-        }))
-
-        console.log(cleared)
-
+        const cleared = filtered.map(m => mapMessage(m))
     
         client.destroy()
 
         res.json( cleared )
 
-
     });
 
     client.login( process.env.DISCORD_BOT_TOKEN  );
 
-    // res.json( {} )
 }
 
 export default handler
