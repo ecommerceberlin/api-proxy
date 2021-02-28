@@ -2,7 +2,7 @@
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-
+import isString from 'lodash/isString'
 import {addCors, time, getRedis} from '../../../components'
 
 
@@ -11,10 +11,10 @@ const mapMessage = (m) => {
   const mentions = m.mentions.users.array().map(item => ({id: item.id, name: item.username}))
 
   //<@!803926999529160734>
-  const content = m.content ? m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
+  const content = isString(m.content) ? m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
     const lookup = mentions.find(mention => mention.id == id);
     return lookup ? `@${lookup.name}` : "";
-  }): ""; 
+  }): m.content; 
 
   return ({
     id: m.id,
@@ -56,7 +56,7 @@ async function handler(req, res) {
     
         client.destroy()
         redis.quit()
-        
+
         res.json( cleared )
 
     });
