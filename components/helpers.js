@@ -1,5 +1,7 @@
 import Cors from 'cors'
 import moment from 'moment-timezone'
+import Redis from 'ioredis'
+
 
 // Initializing the cors middleware
 const cors = Cors({
@@ -29,4 +31,28 @@ export async function addCors(req, res){
 
 export function time(tz = "Europe/Warsaw"){
   return moment().tz(tz).format("HH:mm:ss");
+}
+
+
+
+function fixUrl(url) {
+  if (!url) {
+    return ''
+  }
+  if (url.startsWith('redis://') && !url.startsWith('redis://:')) {
+    return url.replace('redis://', 'redis://:')
+  }
+  if (url.startsWith('rediss://') && !url.startsWith('rediss://:')) {
+    return url.replace('rediss://', 'rediss://:')
+  }
+  return url
+}
+
+export function getRedis() {
+  return new Redis(fixUrl(process.env.REDIS_URL))
+}
+
+
+export function getIP(req){
+  return req.headers['x-forwarded-for'] || req.headers['Remote_Addr'] || '1'
 }

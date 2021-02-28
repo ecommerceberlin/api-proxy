@@ -3,7 +3,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-import {addCors, time} from '../../../components'
+import {addCors, time, getRedis} from '../../../components'
 
 
 const mapMessage = (m) => {
@@ -11,10 +11,10 @@ const mapMessage = (m) => {
   const mentions = m.mentions.users.array().map(item => ({id: item.id, name: item.username}))
 
   //<@!803926999529160734>
-  const content = m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
+  const content = m.content ? m.content.replaceAll(/<@!([0-9]+)>/g, (match, id) => {
     const lookup = mentions.find(mention => mention.id == id);
     return lookup ? `@${lookup.name}` : "";
-  }); 
+  }): ""; 
 
   return ({
     id: m.id,
@@ -34,6 +34,8 @@ async function handler(req, res) {
 
     await addCors(req, res)
 
+    let redis = getRedis()
+
     client.on('ready', async () => {
 
         console.log(`Logged in as ${client.user.tag}!`);
@@ -44,7 +46,11 @@ async function handler(req, res) {
         const channel = await client.channels.fetch(id)
         const lastMessageId = channel.lastMessageId;
         
-        const messages = await channel.messages.fetch({limit: 10});
+        const messages = await channel.messages.fetch({
+          limit: 10,
+       //   after: "803930115964796928"
+        });
+
         const filtered = messages.array().filter(m => !m.pinned && !m.deleted && !m.system)
         const cleared = filtered.map(m => mapMessage(m))
     
