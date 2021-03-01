@@ -1,10 +1,11 @@
 
 
-const Discord = require('discord.js');
-const client = new Discord.Client();
+import {Client as DiscordClient} from 'discord.js'
 import isString from 'lodash/isString'
-import {addCors, time, RedisHelper} from '../../../components'
 import isEmpty from 'lodash/isEmpty'
+
+import {addCors, time, RedisHelper} from '../../../components'
+
 
 const mapMessage = (m) => {
 
@@ -34,41 +35,40 @@ async function handler(req, res) {
 
     await addCors(req, res)
 
+    const client = new DiscordClient();
+    client.login( process.env.DISCORD_BOT_TOKEN  );
     const redis = new RedisHelper(`channel${id}`)
+
+    const sendFreshData = (data) => {
+      if(!isEmpty(data) && !res.finished){
+        res.json( data )
+      }
+    }
+
     const data = await redis.getList(60)
 
-    if(!isEmpty(data)){
-      res.json( data )
-      redis.quit()
-    }else{
+    //add cache TTL check!
+    sendFreshData(data)
 
-      client.on('ready', async () => {
+   // console.log(res)
 
-        console.log(`Logged in as ${client.user.tag}!`);
-
-        //const guild = await client.guilds.fetch("803790453967290418")
-        //console.log(guild.channels)
-
-        const channel = await client.channels.fetch(id)
-        const lastMessageId = channel.lastMessageId;
-        
-        const messages = await channel.messages.fetch({
-          limit: 10,
-          //after: "803930115964796928"
-        });
-
-        const filtered = messages.array().filter(m => !m.pinned && !m.deleted && !m.system)
-        const cleared = filtered.map(m => mapMessage(m))
-   
-        client.destroy()
-        await redis.addToList(cleared)
-        res.json( cleared )
-        redis.quit()
+    client.on('ready', async () => {
+      console.log(`Logged in as ${client.user.tag}!`);
+      //const guild = await client.guilds.fetch("803790453967290418")
+      //console.log(guild.channels)
+      const channel = await client.channels.fetch(id)
+      const lastMessageId = channel.lastMessageId;
+      const messages = await channel.messages.fetch({
+        limit: 10,
+        //after: "803930115964796928"
       });
-
-      client.login( process.env.DISCORD_BOT_TOKEN  );
-
-    }
+      const filtered = messages.array().filter(m => !m.pinned && !m.deleted && !m.system)
+      const cleared = filtered.map(m => mapMessage(m))
+      client.destroy()
+      await redis.addToList(cleared)
+      sendFreshData(cleared);
+      redis.quit()
+    });
 
 
 }
