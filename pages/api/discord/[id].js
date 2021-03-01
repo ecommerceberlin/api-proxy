@@ -39,6 +39,7 @@ async function handler(req, res) {
 
     if(!isEmpty(data)){
       res.json( data )
+      redis.quit()
     }else{
 
       client.on('ready', async () => {
@@ -62,7 +63,7 @@ async function handler(req, res) {
         client.destroy()
         await redis.addToList(cleared)
         res.json( cleared )
-
+        redis.quit()
       });
 
       client.login( process.env.DISCORD_BOT_TOKEN  );
