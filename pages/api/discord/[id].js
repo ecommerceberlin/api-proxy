@@ -3,8 +3,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 import isString from 'lodash/isString'
-import {addCors, time, getRedis} from '../../../components'
-
+import {addCors, time, RedisHelper} from '../../../components'
+import isEmpty from 'lodash/isEmpty'
 
 const mapMessage = (m) => {
 
@@ -34,9 +34,14 @@ async function handler(req, res) {
 
     await addCors(req, res)
 
-    let redis = getRedis()
+    const redis = new RedisHelper(`channel${id}`)
+    const data = await redis.getList(60)
 
-    client.on('ready', async () => {
+    if(!isEmpty(data)){
+      res.json( data )
+    }else{
+
+      client.on('ready', async () => {
 
         console.log(`Logged in as ${client.user.tag}!`);
 
@@ -48,20 +53,22 @@ async function handler(req, res) {
         
         const messages = await channel.messages.fetch({
           limit: 10,
-       //   after: "803930115964796928"
+          //after: "803930115964796928"
         });
 
         const filtered = messages.array().filter(m => !m.pinned && !m.deleted && !m.system)
         const cleared = filtered.map(m => mapMessage(m))
-    
+   
         client.destroy()
-        redis.quit()
-
+        await redis.addToList(cleared)
         res.json( cleared )
 
-    });
+      });
 
-    client.login( process.env.DISCORD_BOT_TOKEN  );
+      client.login( process.env.DISCORD_BOT_TOKEN  );
+
+    }
+
 
 }
 

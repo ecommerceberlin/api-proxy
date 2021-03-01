@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next",
+    "debug": "DEBUG=ioredis:*  next",
     "build": "next build",
     "start": "next start"
   },
@@ -22,6 +23,7 @@
     "next": "10.0.5",
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "redis-json": "^5.0.0"
   }
 }
