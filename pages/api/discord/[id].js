@@ -37,7 +37,7 @@ async function handler(req, res) {
 
     const client = new DiscordClient();
     client.login( process.env.DISCORD_BOT_TOKEN  );
-    const redis = new RedisHelper(`channel${id}`)
+    const redis = new RedisHelper(`_channel${id}`)
 
     const sendFreshData = (data) => {
       if(!isEmpty(data) && !res.finished){

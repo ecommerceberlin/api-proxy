@@ -18,7 +18,7 @@ export class RedisHelper {
     const url = this.fixConnectionUrl(process.env.REDIS_URL);
     this.connection = new Redis(url);
     this.key  = namespace
-    this.listkey = `${namespace}list6`;
+    this.listkey = `${namespace}_list`;
   }
 
   fixConnectionUrl(url) {

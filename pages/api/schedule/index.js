@@ -3,7 +3,7 @@ import {addCors, time} from '../../../components'
 import fetch from 'node-fetch'
 import moment from 'moment';
 
-const url = 'https://api.eventjuicer.com/v1/public/hosts/targiehandlu.pl/presenters';
+const url = 'https://api.eventjuicer.com/proxy?url=https://api.eventjuicer.com/v1/public/hosts/targiehandlu.pl/presenters';
 
 async function handler(req, res) {
 
