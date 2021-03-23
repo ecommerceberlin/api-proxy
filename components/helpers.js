@@ -107,6 +107,7 @@ export class RedisHelper {
 // Initializing the cors middleware
 const cors = Cors({
   methods: ['GET', 'HEAD'],
+  origin: "*",
 })
 
 
