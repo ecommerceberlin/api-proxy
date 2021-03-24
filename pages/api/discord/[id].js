@@ -33,7 +33,7 @@ async function handler(req, res) {
 
     const {query: {id}} = req;
 
-    await addCors(req, res)
+   // await addCors(req, res)
 
     const client = new DiscordClient();
     client.login( process.env.DISCORD_BOT_TOKEN  );
