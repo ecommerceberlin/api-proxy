@@ -108,6 +108,7 @@ export class RedisHelper {
 const cors = Cors({
   methods: ['GET', 'HEAD'],
   origin: "*",
+  credentials: true,
 })
 
 
