@@ -13,7 +13,7 @@ async function handler(req, res) {
 
     const filtered = data.filter(item => {
 
-      if(!item.video || item.video.indexOf("http") ===-1) return false
+ //     if(!item.video || item.video.indexOf("http") ===-1) return false
       
       if(!item.presentation_time || !item.video_length_minutes) return false
 
