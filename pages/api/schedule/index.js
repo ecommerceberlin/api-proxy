@@ -15,7 +15,7 @@ async function handler(req, res) {
 
  //     if(!item.video || item.video.indexOf("http") ===-1) return false
 
-      if(!item.presentation_day || item.presentation_day != "2021-05-26") return false
+      if(!item.presentation_day || item.presentation_day != "2021-05-27") return false
 
       if(!item.presentation_time || !item.video_length_minutes) return false
 
